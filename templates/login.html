@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تسجيل الدخول — IPDS-UBA</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+</head>
+<body>
+    <div class="login-page">
+        <section class="login-form-side">
+            <div class="login-box">
+                <h2>تسجيل الدخول</h2>
+                {% if error %}
+                <div class="alert-banner danger" id="serverError">{{ error }}</div>
+                {% endif %}
+                <div class="alert-banner danger" id="clientError" style="display:none;"></div>
+                <form id="loginForm" class="form-stack" novalidate>
+                    <div>
+                        <label for="username">اسم المستخدم أو البريد الإلكتروني</label>
+                        <input type="text" id="username" name="username" required autocomplete="username">
+                    </div>
+                    <div>
+                        <label for="password">كلمة المرور</label>
+                        <input type="password" id="password" name="password" required autocomplete="current-password">
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary" style="width:100%;">تسجيل الدخول</button>
+                    </div>
+                </form>
+                <p class="muted">ليس لديك حساب؟ <a href="{{ url_for('auth.register_view') }}">إنشاء حساب جديد</a></p>
+            </div>
+        </section>
+        <section class="login-welcome">
+            <h1>نظام ذكي لكشف هجمات التصيد</h1>
+            <p>يحلل سلوك المستخدم أثناء تسجيل الدخول ويرصد الأنماط المشبوهة باستخدام تقنيات تعلم الآلة.</p>
+            <ul>
+                <li>تحليل سرعة الكتابة وساعات الدخول</li>
+                <li>تقييم الروابط المرتبطة بالجلسة</li>
+                <li>تنبيهات أمنية واضحة ومفصلة</li>
+            </ul>
+        </section>
+    </div>
+    <script src="{{ url_for('static', filename='js/login.js') }}"></script>
+</body>
+</html>

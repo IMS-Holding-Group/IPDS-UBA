@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="grid-2">
+    <div class="panel">
+        <div class="panel-title">بيانات الحساب</div>
+        <p style="font-weight:700;margin-bottom:8px;">{{ user.username }}</p>
+        <p style="font-weight:600;color:var(--text-muted);margin-bottom:8px;">{{ user.email }}</p>
+        {% if user.account_creation_date %}
+        <p style="font-weight:600;color:var(--text-muted);">تاريخ الإنشاء: <span data-utc-datetime="{{ user.account_creation_date|e }}">{{ user.account_creation_date }}</span></p>
+        {% endif %}
+    </div>
+    <div class="panel">
+        <div class="panel-title">إحصائيات سريعة</div>
+        <p style="font-weight:700;">عدد النشاطات: {{ total_act }}</p>
+        <p style="font-weight:700;">عدد التنبيهات: {{ total_alerts }}</p>
+        <p style="font-weight:700;">معدل الأمان: {{ security_rate }}%</p>
+    </div>
+</div>
+
+<div class="panel">
+    <div class="panel-title">ملف السلوك الطبيعي</div>
+    {% if profile %}
+    <p style="font-weight:700;margin-bottom:8px;">ساعات الدخول المعتادة</p>
+    <p style="font-weight:600;margin-bottom:12px;">{{ profile.typical_login_hours or '—' }}</p>
+    <p style="font-weight:700;margin-bottom:8px;">متوسط سرعة الكتابة (حرف/ثانية)</p>
+    <p style="font-weight:600;margin-bottom:12px;">{{ '%.2f'|format(profile.avg_typing_speed or 0) }}</p>
+    <p style="font-weight:700;margin-bottom:8px;">متوسط مدة الجلسات (ثانية)</p>
+    <p style="font-weight:600;margin-bottom:12px;">{{ '%.1f'|format(profile.avg_session_duration or 0) }}</p>
+    <p style="font-weight:700;margin-bottom:8px;">أنماط الروابط الشائعة</p>
+    <p style="font-weight:600;word-break:break-all;">{{ profile.common_url_patterns or '—' }}</p>
+    <p style="margin-top:10px;font-size:13px;color:var(--text-muted);font-weight:600;">آخر تحديث: <span data-utc-datetime="{{ profile.profile_updated|e }}">{{ profile.profile_updated }}</span></p>
+    {% else %}
+    <p style="font-weight:700;">لا يوجد ملف سلوكي بعد — سيُنشأ تلقائياً مع النشاط.</p>
+    {% endif %}
+</div>
+
+<div class="panel">
+    <div class="panel-title">تغيير كلمة المرور</div>
+    {% if msg %}
+    <div class="alert-banner success">{{ msg }}</div>
+    {% endif %}
+    {% if err %}
+    <div class="alert-banner danger">{{ err }}</div>
+    {% endif %}
+    <form method="post" class="form-stack" style="max-width:480px;">
+        <div>
+            <label for="old_password">كلمة المرور الحالية</label>
+            <input type="password" id="old_password" name="old_password" required>
+        </div>
+        <div>
+            <label for="new_password">كلمة المرور الجديدة</label>
+            <input type="password" id="new_password" name="new_password" required minlength="6">
+        </div>
+        <div>
+            <label for="new_password2">تأكيد كلمة المرور</label>
+            <input type="password" id="new_password2" name="new_password2" required minlength="6">
+        </div>
+        <div>
+            <button type="submit" class="btn btn-primary">حفظ التغيير</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

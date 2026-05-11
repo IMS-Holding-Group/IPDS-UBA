@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="filters-bar" style="margin-bottom:20px;">
+    <div class="field">
+        <label for="fltSeverity">الخطورة</label>
+        <select id="fltSeverity">
+            <option value="">الكل</option>
+            <option value="عالية">عالية</option>
+            <option value="متوسطة">متوسطة</option>
+            <option value="منخفضة">منخفضة</option>
+        </select>
+    </div>
+    <div class="field">
+        <label for="fltStatus">الحالة</label>
+        <select id="fltStatus">
+            <option value="">الكل</option>
+            <option value="جديد">جديد</option>
+            <option value="قيد المراجعة">قيد المراجعة</option>
+            <option value="مغلق">مغلق</option>
+        </select>
+    </div>
+    <div class="field" style="flex:0 0 auto;">
+        <button type="button" class="btn btn-primary" id="applyFiltersBtn">تطبيق</button>
+    </div>
+</div>
+
+<div id="alertsContainer"></div>
+{% endblock %}
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/alerts.js') }}"></script>
+{% endblock %}

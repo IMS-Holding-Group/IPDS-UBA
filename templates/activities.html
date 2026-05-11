@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+{% block content %}
+<form class="filters-bar" method="get" action="{{ url_for('activities.activities_view') }}">
+    <div class="field">
+        <label for="type">نوع النشاط</label>
+        <select name="type" id="type">
+            <option value="">الكل</option>
+            {% for t in types %}
+            <option value="{{ t }}" {% if activity_type == t %}selected{% endif %}>{{ t }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="field">
+        <label for="suspicious">الحالة</label>
+        <select name="suspicious" id="suspicious">
+            <option value="" {% if suspicious == '' %}selected{% endif %}>الكل</option>
+            <option value="0" {% if suspicious == '0' %}selected{% endif %}>طبيعي</option>
+            <option value="1" {% if suspicious == '1' %}selected{% endif %}>مشبوه</option>
+        </select>
+    </div>
+    <div class="field">
+        <label for="date_from">من تاريخ</label>
+        <input type="date" name="date_from" id="date_from" value="{{ date_from }}">
+    </div>
+    <div class="field">
+        <label for="date_to">إلى تاريخ</label>
+        <input type="date" name="date_to" id="date_to" value="{{ date_to }}">
+    </div>
+    <div class="field" style="flex:0 0 auto;">
+        <button type="submit" class="btn btn-primary">تطبيق الفلتر</button>
+    </div>
+    <div class="field" style="flex:0 0 auto;">
+        <button type="button" class="btn btn-outline" id="exportBtn">تصدير</button>
+    </div>
+</form>
+
+<div class="panel">
+    <div class="panel-title">سجل النشاطات ({{ total }} سجل)</div>
+    <div style="overflow-x:auto;">
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>الوقت والتاريخ</th>
+                    <th>النوع</th>
+                    <th>URL</th>
+                    <th>IP</th>
+                    <th>سرعة الكتابة</th>
+                    <th>محاولات فاشلة</th>
+                    <th>الحالة</th>
+                    <th>حذف</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for r in rows %}
+                <tr>
+                    <td>{{ r.activity_id }}</td>
+                    <td><span data-utc-datetime="{{ r.timestamp|e }}">{{ r.timestamp }}</span></td>
+                    <td>{{ r.activity_type }}</td>
+                    <td style="max-width:220px;word-break:break-all;">{{ r.url_address or '—' }}</td>
+                    <td>{{ r.ip_address or '—' }}</td>
+                    <td>{{ '%.1f'|format(r.typing_speed or 0) }}</td>
+                    <td>{{ r.failed_attempts or 0 }}</td>
+                    <td>
+                        {% if r.is_suspicious %}
+                        <span class="badge badge-danger">مشبوه</span>
+                        {% else %}
+                        <span class="badge badge-success">طبيعي</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <button type="button" class="btn-delete-record" data-delete-activity="{{ r.activity_id }}" title="حذف هذا السجل من السجل">
+                            <i class="fa-solid fa-trash-can" aria-hidden="true"></i>
+                            <span>حذف</span>
+                        </button>
+                    </td>
+                </tr>
+                {% else %}
+                <tr><td colspan="9" style="text-align:center;font-weight:700;">لا توجد سجلات</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="pagination">
+        {% for p in range(1, total_pages + 1) %}
+            {% if p == page %}
+            <span class="current">{{ p }}</span>
+            {% else %}
+            <a href="{{ url_for('activities.activities_view') }}?page={{ p }}{% if activity_type %}&type={{ activity_type|e }}{% endif %}{% if suspicious != '' %}&suspicious={{ suspicious|e }}{% endif %}{% if date_from %}&date_from={{ date_from|e }}{% endif %}{% if date_to %}&date_to={{ date_to|e }}{% endif %}">{{ p }}</a>
+            {% endif %}
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/activities.js') }}"></script>
+{% endblock %}

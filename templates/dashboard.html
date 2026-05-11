@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="grid-4">
+    <div class="stat-card">
+        <div class="stat-label">إجمالي النشاطات</div>
+        <div class="stat-value" id="statTotalActivities">0</div>
+        <div class="stat-desc">كل الأحداث المسجلة لحسابك</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-label">التنبيهات النشطة</div>
+        <div class="stat-value" id="statActiveAlerts">0</div>
+        <div class="stat-desc">غير مغلقة أو قيد المتابعة</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-label">معدل الأمان</div>
+        <div class="stat-value" id="statSecurityRate">0%</div>
+        <div class="stat-desc">نسبة النشاطات الطبيعية</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-label">آخر تسجيل دخول</div>
+        <div class="stat-value" id="statLastLogin" style="font-size:18px;">—</div>
+        <div class="stat-desc">حسب السجل في النظام</div>
+    </div>
+</div>
+
+<div class="panel">
+    <div class="panel-title">النشاط خلال آخر 7 أيام (طبيعي مقابل مشبوه)</div>
+    <div class="chart-wrap">
+        <canvas id="activityChart" width="900" height="220"></canvas>
+    </div>
+    <p class="muted" style="text-align:right;margin-top:10px;">المحور الأزرق: طبيعي — المحمر: مشبوه</p>
+</div>
+
+<div class="panel">
+    <div class="panel-title">آخر النشاطات</div>
+    <div style="overflow-x:auto;">
+        <table>
+            <thead>
+                <tr>
+                    <th>الوقت</th>
+                    <th>النوع</th>
+                    <th>الرابط</th>
+                    <th>الحالة</th>
+                    <th>حذف</th>
+                </tr>
+            </thead>
+            <tbody id="recentActivitiesBody"></tbody>
+        </table>
+    </div>
+</div>
+
+<div class="panel">
+    <div class="panel-title">تحليل رابط فوري</div>
+    <div class="grid-2" style="align-items:flex-end;">
+        <div>
+            <label for="urlAnalyze">عنوان URL</label>
+            <input type="text" id="urlAnalyze" placeholder="https://example.com/login">
+        </div>
+        <div>
+            <button type="button" class="btn btn-primary" id="analyzeUrlBtn">فحص الرابط</button>
+        </div>
+    </div>
+    <div id="analyzeResult" style="margin-top:14px;font-weight:600;"></div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+{% endblock %}
