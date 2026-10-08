@@ -10,7 +10,7 @@ from routes.auth import auth_bp, set_behavior_analyzer
 from routes.dashboard import dashboard_bp
 
 app = Flask(__name__)
-app.secret_key = os.environ.get('SECRET_KEY', 'IPDS_UBA_LOCAL_DEV_ONLY_CHANGE_IN_PRODUCTION')
+app.secret_key = os.environ.get('SECRET_KEY', '')
 
 analyzer = BehaviorAnalyzer()
 set_behavior_analyzer(analyzer)

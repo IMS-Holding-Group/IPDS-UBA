@@ -98,14 +98,14 @@ def seed_default_users():
         INSERT INTO users (username, email, password_hash, is_admin, is_active)
         VALUES (?, ?, ?, 1, 1)
     """,
-        ('admin', 'admin@ipds.local', generate_password_hash('admin123')),
+        ('admin', 'admin@ipds.local', generate_password_hash('')),
     )
     cur.execute(
         """
         INSERT INTO users (username, email, password_hash, is_admin, is_active)
         VALUES (?, ?, ?, 0, 1)
     """,
-        ('testuser', 'testuser@ipds.local', generate_password_hash('test123')),
+        ('testuser', 'testuser@ipds.local', generate_password_hash('')),
     )
     conn.commit()
     uid_admin = cur.execute("SELECT user_id FROM users WHERE username='admin'").fetchone()[0]
